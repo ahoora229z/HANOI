@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090d16" />
+  <meta name="description" content="برج هانوی تعاملی؛ نمایش بصری الگوریتم بازگشتی با کنترل سرعت و تعداد دیسک‌ها." />
+  <title>HANOI — برج هانوی تعاملی</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Hanoi home">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span class="brand-copy"><strong>HANOI<span>.</span></strong><small>ALGORITHM VISUALIZER</small></span>
+      </a>
+      <div class="topbar-right"><span class="live-dot"></span><span>آزمایشگاه الگوریتم</span><span class="top-divider"></span><span class="version">نسخه 1.0</span></div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow"><span class="eyebrow-line"></span> RECURSION / CLASSIC PROBLEM</div>
+        <h1>برج هانوی<span class="title-dot">.</span></h1>
+        <p>یک مسئله‌ی کلاسیک، یک نمایش زنده. حرکت دیسک‌ها را ببین، سرعت را کنترل کن و منطق بازگشت را قدم‌به‌قدم دنبال کن.</p>
+      </section>
+
+      <section class="workspace">
+        <div class="visual-panel panel">
+          <div class="panel-heading">
+            <div><span class="section-kicker">LIVE SIMULATION</span><h2>نمایش برج‌ها</h2></div>
+            <div class="simulation-status"><span class="status-pulse" id="statusPulse"></span><span id="statusText">آماده اجرا</span></div>
+          </div>
+          <div class="stats-row">
+            <div class="stat"><span class="stat-icon">↗</span><div><small>حرکت فعلی</small><strong id="moveCount">۰ <i>/ ۷</i></strong></div></div>
+            <div class="stat"><span class="stat-icon purple">◎</span><div><small>حداقل حرکت</small><strong id="minimumMoves">۷</strong></div></div>
+            <div class="stat"><span class="stat-icon blue">◷</span><div><small>زمان سپری‌شده</small><strong id="elapsed">۰۰:۰۰</strong></div></div>
+          </div>
+          <div class="tower-stage" id="towerStage">
+            <div class="stage-grid"></div>
+            <div class="tower-area">
+              <div class="tower" data-tower="0"><div class="tower-rod"></div><div class="disks" id="tower0"></div><div class="tower-base"></div><div class="tower-label"><b>A</b><span>مبدأ</span></div></div>
+              <div class="tower" data-tower="1"><div class="tower-rod"></div><div class="disks" id="tower1"></div><div class="tower-base"></div><div class="tower-label"><b>B</b><span>کمکی</span></div></div>
+              <div class="tower" data-tower="2"><div class="tower-rod"></div><div class="disks" id="tower2"></div><div class="tower-base"></div><div class="tower-label"><b>C</b><span>مقصد</span></div></div>
+            </div>
+            <div class="stage-caption"><span class="caption-dot"></span> هر دیسک فقط روی دیسک بزرگ‌تر قرار می‌گیرد.</div>
+          </div>
+          <div class="progress-wrap"><div class="progress-meta"><span>پیشرفت حل مسئله</span><strong id="progressLabel">۰٪</strong></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div></div>
+          <div class="control-row">
+            <button class="btn btn-primary" id="startBtn"><span id="startIcon">▶</span><span id="startLabel">شروع شبیه‌سازی</span></button>
+            <button class="btn btn-secondary" id="stepBtn" title="اجرای یک حرکت">⏭ <span>یک قدم</span></button>
+            <button class="btn btn-secondary" id="resetBtn">↻ <span>شروع مجدد</span></button>
+          </div>
+        </div>
+
+        <aside class="settings-column">
+          <div class="panel settings-panel">
+            <div class="panel-heading compact"><div><span class="section-kicker">CONFIGURATION</span><h2>تنظیمات اجرا</h2></div><span class="gear">⚙</span></div>
+            <div class="setting-block">
+              <div class="setting-label"><label for="diskRange">تعداد دیسک‌ها</label><span class="value-chip"><b id="diskValue">۳</b> دیسک</span></div>
+              <input type="range" id="diskRange" min="3" max="16" value="3" />
+              <div class="range-labels"><span>۳ دیسک</span><span>16 دیسک</span></div>
+              <p class="setting-hint">با افزایش تعداد دیسک‌ها، تعداد حرکت‌ها به‌صورت نمایی بیشتر می‌شود.</p>
+            </div>
+            <div class="setting-block">
+              <div class="setting-label"><label for="speedRange">سرعت حرکت</label><span class="value-chip"><b id="speedValue">۱×</b></span></div>
+              <input type="range" id="speedRange" min="1" max="5" value="2" />
+              <div class="range-labels"><span>آهسته</span><span>سریع</span></div>
+            </div>
+            <div class="setting-block">
+              <div class="setting-label"><label for="speedSelect">حالت نمایش</label></div>
+              <div class="mode-options">
+                <button class="mode-btn active" data-mode="auto"><span>◉</span><b>خودکار</b><small>حل کامل مسئله</small></button>
+                <button class="mode-btn" data-mode="manual"><span>⤴</span><b>دستی</b><small>حرکت قدم‌به‌قدم</small></button>
+              </div>
+            </div>
+            <div class="estimate-card"><div class="estimate-icon">⌁</div><div><small>زمان تقریبی حل</small><strong id="estimate">حدود ۷ ثانیه</strong></div><span class="estimate-arrow">↗</span></div>
+          </div>
+          <div class="panel rule-panel">
+            <div class="rule-heading"><span class="rule-icon">✳</span><h3>قوانین بازی</h3></div>
+            <ul><li><span>۰۱</span> در هر حرکت فقط یک دیسک جابه‌جا می‌شود.</li><li><span>۰۲</span> فقط دیسک بالایی هر برج قابل حرکت است.</li><li><span>۰۳</span> دیسک بزرگ‌تر روی دیسک کوچک‌تر قرار نمی‌گیرد.</li></ul>
+          </div>
+        </aside>
+      </section>
+
+      <section class="bottom-grid">
+        <div class="panel move-panel">
+          <div class="panel-heading compact"><div><span class="section-kicker">MOVE HISTORY</span><h2>تاریخچه‌ی حرکت‌ها</h2></div><span class="history-count" id="historyCount">۰ حرکت</span></div>
+          <div class="history-list" id="historyList"><div class="empty-history"><span>⌁</span><p>هنوز حرکتی انجام نشده.</p><small>برای شروع، دکمه‌ی شبیه‌سازی را بزن.</small></div></div>
+        </div>
+        <div class="panel insight-panel">
+          <span class="section-kicker">ALGORITHM INSIGHT</span><h2>قدرت بازگشت (Recursion)</h2>
+          <p>برای انتقال <b>n</b> دیسک، ابتدا <b>n−1</b> دیسک به برج کمکی منتقل می‌شوند؛ سپس بزرگ‌ترین دیسک جابه‌جا می‌شود و در پایان، دیسک‌های کوچک‌تر روی آن قرار می‌گیرند.</p>
+          <div class="formula"><span>T(n) = 2T(n−1) + 1</span><b id="formulaResult">T(3) = ۷</b></div>
+          <div class="insight-footer"><span class="mini-bars"><i></i><i></i><i></i><i></i><i></i></span><span>پیچیدگی زمانی: <b>O(2ⁿ)</b></span></div>
+        </div>
+      </section>
+      <footer><span>HANOI<span class="footer-dot">.</span> VISUALIZER</span><span>ساخته‌شده برای یادگیری الگوریتم‌ها <b>✦</b></span><span>HTML · CSS · JAVASCRIPT</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
