@@ -365,7 +365,7 @@ h1 {
     position: absolute;
     bottom: 39px;
     width: 5px;
-    height: 290px;
+    height: 210px;
     max-height: 74%;
     background: linear-gradient(90deg, #303c50, #68778f, #303c50);
     border-radius: 5px 5px 0 0;
@@ -735,7 +735,9 @@ input[type=range]::-moz-range-thumb {
 }
 
 .rule-panel {
-    padding: 19px 21px
+    padding: 19px 21px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .rule-heading {
@@ -1080,12 +1082,13 @@ footer b {
         display: none
     }
 
-    .hero {
-        padding: 30px 0 24px
-    }
-
     .hero p {
         font-size: 12px
+    }
+
+    .pael-ce{
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .visual-panel {
@@ -1157,11 +1160,17 @@ footer b {
         display: flex
     }
 
-    .settings-panel,
+    .settings-panel{
+        padding: 22px 45px
+    }
+
+    .move-panel{
+       padding: 22px 63px;
+    }
+
     .rule-panel,
-    .move-panel,
     .insight-panel {
-        padding: 18px 16px
+        padding: 22px 70px
     }
 
     footer {
